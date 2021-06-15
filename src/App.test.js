@@ -35,6 +35,7 @@ describe('<App />', () => {
 
   it('sorts tasks by descending point value', () => {
     const text = wrapper.text();
+    expect(text.indexOf('get shorty')).toBeLessThan(text.indexOf('kill bill'));
   });
 
   it('renders the correct class for the point threshold', () => {
