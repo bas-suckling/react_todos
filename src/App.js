@@ -23,13 +23,36 @@ export default class App extends Component {
     this.setState({ [key]: event.target.value });
   };
 
+  sortTasks = (array) => {
+    if (array.length > 0) {
+      array.sort(function (a, b) {
+        return b.pointValue - a.pointValue
+      });
+      return array
+    }
+  };
+
+  parseInput = (task) => {
+    return task
+  }
+
+
   handleSubmit = event => {
     event.preventDefault();
+
+    // this.state.pointValue = this.parseInput(this.state.newTask)
+    
+    if (!this.state.pointValue) {
+      this.state.pointValue = 1
+    }
+
     const newTasks = [
       ...this.state.tasks,
-      { name: this.state.newTask }
+      { name: this.state.newTask,
+        pointValue : this.state.pointValue }
     ];
-    this.setState({ tasks: newTasks, newTask: '' });
+
+    this.setState({ tasks: this.sortTasks(newTasks), newTask: '', pointValue: '' });
   };
 
   deleteItem = index => event => {
@@ -53,6 +76,12 @@ export default class App extends Component {
             value={this.state.newTask}
             onChange={this.handleChange('newTask')}
           />
+          <TextField
+            id="pointValue"
+            label="Point Value"
+            value={this.state.pointValue}
+            onChange={this.handleChange('pointValue')}
+          />
           <Button type="submit" aria-label="Add" color="primary">
             <AddIcon /> Add
           </Button>
@@ -65,7 +94,8 @@ export default class App extends Component {
               {this.state.tasks.map((task, i) =>
                 <div key={i} >
                   <ListItem button>
-                    <ListItemText primary={task.name} />
+                    <ListItemText primary={task.name} className={task.pointValue >= 10 ? 'critical' :' normal'}/>
+                    <ListItemText secondary={task.pointValue} />
                     <ListItemSecondaryAction>
                       <IconButton
                         aria-label="Delete"
