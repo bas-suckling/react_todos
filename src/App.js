@@ -26,7 +26,7 @@ export default class App extends Component {
   sortTasks = (array) => {
     if (array.length > 0) {
       array.sort(function (a, b) {
-        return b.pointValue - a.pointValue
+        return b.points - a.points
       });
       return array
     }
@@ -40,19 +40,19 @@ export default class App extends Component {
   handleSubmit = event => {
     event.preventDefault();
 
-    // this.state.pointValue = this.parseInput(this.state.newTask)
+    // this.state.points = this.parseInput(this.state.newTask)
     
-    if (!this.state.pointValue) {
-      this.state.pointValue = 1
+    if (!this.state.points) {
+      this.state.points = 1
     }
 
     const newTasks = [
       ...this.state.tasks,
       { name: this.state.newTask,
-        pointValue : this.state.pointValue }
+        points : this.state.points }
     ];
 
-    this.setState({ tasks: this.sortTasks(newTasks), newTask: '', pointValue: '' });
+    this.setState({ tasks: this.sortTasks(newTasks), newTask: '', points: '' });
   };
 
   deleteItem = index => event => {
@@ -77,10 +77,10 @@ export default class App extends Component {
             onChange={this.handleChange('newTask')}
           />
           <TextField
-            id="pointValue"
+            id="points"
             label="Point Value"
-            value={this.state.pointValue}
-            onChange={this.handleChange('pointValue')}
+            value={this.state.points}
+            onChange={this.handleChange('points')}
           />
           <Button type="submit" aria-label="Add" color="primary">
             <AddIcon /> Add
@@ -94,8 +94,8 @@ export default class App extends Component {
               {this.state.tasks.map((task, i) =>
                 <div key={i} >
                   <ListItem button>
-                    <ListItemText primary={task.name} className={task.pointValue >= 10 ? 'critical' :' normal'}/>
-                    <ListItemText secondary={task.pointValue} />
+                    <ListItemText primary={task.name} className={task.points >= 10 ? 'critical' :' normal'}/>
+                    <ListItemText secondary={task.points} />
                     <ListItemSecondaryAction>
                       <IconButton
                         aria-label="Delete"
